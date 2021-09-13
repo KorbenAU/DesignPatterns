@@ -1,9 +1,7 @@
-package Decorator.StaticDecorator;
-
-import java.util.function.Supplier;
+package Structural.Decorator.DynamicDecorator;
 
 interface Shape {
-   String info();
+   String info(); // deliberately different from toString
 }
 
 class Circle implements Shape {
@@ -45,50 +43,47 @@ class Square implements Shape {
 // we are NOT altering the base class of these objects
 // cannot make ColoredSquare, ColoredCircle
 
-class ColoredShape<T extends Shape> implements Shape {
+class ColoredShape implements Shape {
    private Shape shape;
    private String color;
 
-   public ColoredShape(Supplier<? extends T> ctor, String color) {
-      shape = ctor.get();
+   public ColoredShape(Shape shape, String color) {
+      this.shape = shape;
       this.color = color;
    }
 
    @Override
    public String info() {
-      return shape + " has the color " + color;
+      return shape.info() + " has the color " + color;
    }
 }
 
-class TransparentShape<T extends Shape> implements Shape {
+class TransparentShape implements Shape {
    private Shape shape;
    private int transparency;
 
-   public TransparentShape(Supplier<? extends T> ctor, int transparency) {
-      shape = ctor.get();
+   public TransparentShape(Shape shape, int transparency) {
+      this.shape = shape;
       this.transparency = transparency;
    }
 
    @Override
    public String info() {
-      return shape + " has " + transparency + "% transparency";
+      return shape.info() + " has " + transparency + "% transparency";
    }
 }
 
-class StaticDecoratorDemo {
+class DynamicDecoratorDemo {
    public static void main(String[] args) {
       Circle circle = new Circle(10);
       System.out.println(circle.info());
 
-      ColoredShape<Square> blueSquare = new ColoredShape<>(() -> new Square(20), "blue");
+      ColoredShape blueSquare = new ColoredShape(new Square(20), "blue");
       System.out.println(blueSquare.info());
 
-      // ugly!
-      TransparentShape<ColoredShape<Circle>> myCircle =
-              new TransparentShape<>(() ->
-                      new ColoredShape<>(() -> new Circle(5), "green"), 50
-              );
+      TransparentShape myCircle = new TransparentShape(new ColoredShape(new Circle(5), "green"), 50);
       System.out.println(myCircle.info());
+
       // cannot call myCircle.resize()
    }
 }

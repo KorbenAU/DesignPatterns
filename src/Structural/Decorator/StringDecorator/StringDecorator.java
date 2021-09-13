@@ -1,4 +1,4 @@
-package Decorator.StringDecorator;
+package Structural.Decorator.StringDecorator;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;

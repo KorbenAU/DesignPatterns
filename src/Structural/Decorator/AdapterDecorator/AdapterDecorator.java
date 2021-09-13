@@ -1,4 +1,4 @@
-package Decorator.AdapterDecorator;
+package Structural.Decorator.AdapterDecorator;
 
 import java.util.stream.IntStream;
 
